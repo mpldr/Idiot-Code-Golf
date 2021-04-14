@@ -1,4 +1,4 @@
-# Idiot-Code-Golf
+# Idiot Code-Golf
 
 Stupid solutions to simple problems.
 
