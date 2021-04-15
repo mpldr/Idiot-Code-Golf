@@ -1,93 +1,93 @@
 package main
 
 import (
-	"fmt"
-	"math"
-	"os"
-	"strconv"
-	"sync"
+	ս "fmt"
+	q "math"
+	ո "os"
+	n "strconv"
+	u "sync"
 )
 
 func main() {
-	if len(os.Args) != 3 {
-		fmt.Println("we need 2 numbers. usage: ./gcd 200 50")
-		os.Exit(2)
+	if len(ո.Args) != 3 {
+		ս.Println("we need 2 numbers. usage: ./gcd 200 50")
+		ո.Exit(2)
 	}
-	a, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		fmt.Printf("whatever %s is… I can't make it an integer: %v\n", os.Args[1], err)
-		os.Exit(1)
+	о, օ := n.Atoi(ո.Args[1])
+	if օ != nil {
+		ս.Printf("whatever %s is… I can't make it an integer: %v\n", ո.Args[1], օ)
+		ո.Exit(1)
 	}
-	b, err := strconv.Atoi(os.Args[2])
-	if err != nil {
-		fmt.Printf("whatever %s is… I can't make it an integer: %v\n", os.Args[2], err)
-		os.Exit(1)
+	ο, օ := n.Atoi(ո.Args[2])
+	if օ != nil {
+		ս.Printf("whatever %s is… I can't make it an integer: %v\n", ո.Args[2], օ)
+		ո.Exit(1)
 	}
 
-	fmt.Println(gcd(a, b))
+	ս.Println(o(о, ο))
 }
 
-func gcd(a, b int) int {
-	if a == 0 || b == 0 {
+func o(օ, ο int) int {
+	if օ == 0 || ο == 0 {
 		return 0
 	}
 
-	adiv := make(chan []int)
-	bdiv := make(chan []int)
+	е := make(chan []int)
+	e := make(chan []int)
 
-	go getDivisors(a, adiv)
-	go getDivisors(b, bdiv)
+	go о(օ, е)
+	go о(ο, e)
 
-	adivs := <-adiv
-	bdivs := <-bdiv
+	х := <-е
+	X := <-e
 
-	var gcd int
+	var о int
 
-	for i := 0; i < len(adivs); i++ {
-		for j := 0; j < len(bdivs); j++ {
-			if adivs[i] == bdivs[j] && adivs[i] > gcd {
-				gcd = adivs[i]
+	for i := 0; i < len(х); i++ {
+		for j := 0; j < len(X); j++ {
+			if х[i] == X[j] && х[i] > о {
+				о = х[i]
 			}
 		}
 	}
 
-	return gcd
+	return о
 }
 
-func getDivisors(num int, out chan []int) {
-	results := make(chan int, 4096)
-	joined := make(chan struct{})
-	var res []int
-	var wg sync.WaitGroup
+func о(օ int, о chan []int) {
+	a := make(chan int, 4096)
+	а := make(chan struct{})
+	var y []int
+	var у u.WaitGroup
 
 	go func(r chan int) {
 		for i := range r {
-			res = append(res, i)
+			y = append(y, i)
 		}
-		joined <- struct{}{}
-	}(results)
+		а <- struct{}{}
+	}(a)
 
-	concurrency := int(math.Ceil(float64(num) / 512))
+	һ := int(q.Ceil(float64(օ) / 512))
 
-	for i := 0; i < concurrency; i++ {
-		wg.Add(1)
+	for i := 0; i < һ; i++ {
+		у.Add(1)
 		go func(n, l, u int) {
-			defer wg.Done()
-			getDivisorsLimit(n, l, u, results)
-		}(num, i*512+1, i*512+512)
+			defer у.Done()
+			ο(n, l, u, a)
+		}(օ, i*512+1, i*512+512)
 	}
 
-	wg.Wait()
-	close(results)
-	<-joined
+	у.Wait()
+	close(a)
+	<-а
 
-	out <- res
+	о <- y
 }
 
-func getDivisorsLimit(num, lowerBound, upperBound int, results chan int) {
-	for i := lowerBound; i <= upperBound && i <= num; i++ {
-		if num%i == 0 {
-			results <- i
+func ο(օ, о, ο int, o chan int) {
+	for i := о; i <= ο && i <= օ; i++ {
+		if օ%i == 0 {
+			o <- i
 		}
 	}
 }
