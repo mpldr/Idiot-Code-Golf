@@ -21,8 +21,8 @@ int main() {
     channel c;
     int x = 1;
     c.write(x);
-    std::cout << std::any_cast<int>(c.read()) << endl;
+    std::cout << std::any_cast<int>(c.read()) << std::endl;
     std::string y = "Hello world";
     c.write(y);
-    std::cout << std::any_cast<std::string>(c.read()) << endl;
+    std::cout << std::any_cast<std::string>(c.read()) << std::endl;
 }
