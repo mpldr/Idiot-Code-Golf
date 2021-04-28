@@ -6,23 +6,24 @@ class channel {
 private:
     std::any val;
 public:
-    void write(auto v) {
+    void operator<<(auto & v) {
         val = v;
     }
-    auto read() {
+    void operator>>(auto & v) {
         while (!val.has_value());
-        auto ret = val;
+        v = std::any_cast<decltype(v)>(val);
         val.reset();
-        return ret;
     }
 };
 
 int main() {
     channel c;
     int x = 1;
-    c.write(x);
-    std::cout << std::any_cast<int>(c.read()) << std::endl;
+    c << x;
     std::string y = "Hello world";
-    c.write(y);
-    std::cout << std::any_cast<std::string>(c.read()) << std::endl;
+    c >> x;
+    c << y;
+    std::cout << x << std::endl;
+    c >> y;
+    std::cout << y << std::endl;
 }
